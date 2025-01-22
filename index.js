@@ -8,15 +8,30 @@ const App = {
         }
     },
     methods: {
-        inputChangeHandle(e) {
-            console.log(e.target.value);
-            this.inputValue = e.target.value;
-        },
+        
         onsubmitForm() {
             this.list.push(this.inputValue);
             this.inputValue = '';
+        },
+        deleteItem(i) {
+            this.list.splice(i, 1);
         }
     },
+    computed: {
+        doubleCount() {
+           return this.list.length * 2
+        }
+    },
+    watch: {
+        inputValue(value) {
+            if(value.length > 10) {
+                this.inputValue = '';
+            }
+        }
+    },
+    template: `
+        <div>Hello</div>
+    `
 };
 
 Vue.createApp(App).mount('#app');
