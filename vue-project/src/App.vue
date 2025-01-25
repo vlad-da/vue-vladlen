@@ -1,26 +1,59 @@
 <template>
-  <div class="container">
-    <div class="card">
-      sdfdsfdsf
-      <button class="btn" @click="modal = true"
-     >Открыть модальное окно</button>
+  <div>
+    <the-navbar :visible="isAuth"></the-navbar>
+    <div class="container with-nav">
+      <router-view></router-view>
     </div>
-
-    <AppModal v-if="modal" @close-modal="modal = false"/>
   </div>
+
 </template>
 
 <script>
-import AppModal from './AppModal.vue'
+import TheNavbar from './components/TheNavbar.vue'
+
 export default {
-  name: 'App',
+  components: {TheNavbar},
   data() {
     return {
-      modal: false
+      isAuth: false
     }
   },
-  components: {
-    AppModal
+  methods: {
+    login(){
+      this.isAuth = true
+      if(this.$route.query.page) {
+        this.$router.push(this.$route.query.page)
+      } else {
+        this.$router.push('/dashboard')
+
+      }
+    },
+    logout() {
+      this.isAuth = false
+      this.$router.push({
+          path: '/login',
+          query: {
+            page: this.$route.path
+          }
+
+        })
+    }
+  },
+  provide() {
+    return {
+      login: this.login,
+      logout: this.logout,
+      emails: [
+        {id: 1, theme: 'Купил себе PlayStation 5'},
+        {id: 2, theme: 'Выучил Vue Router'},
+        {id: 3, theme: 'Хочу изучить весь Vue'},
+        {id: 4, theme: 'А следующий блок про Vuex!'},
+        {id: 5, theme: 'А что там на счет Vue Hooks?'}
+      ]
+    }
   }
 }
 </script>
+
+<style>
+</style>
